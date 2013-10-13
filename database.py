@@ -20,6 +20,3 @@ def getChannelsToCheck() :
 	c = db.cursor()
 	c.execute("""SELECT DISTINCT channel FROM users""")
 	return [res[0] for res in c.fetchall()]
-
-#addUser("555-123-4567",["abcd","efgh","ijkl"])
-#print [numbersForChannel(ch) for ch in getChannelsToCheck()]
