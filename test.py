@@ -2,12 +2,18 @@ from twilio.rest import TwilioRestClient
 import yaml
 import json
 import requests
+from pprint import pprint as pp
 
-r = requests.get("https://api.twitch.tv/kraken/channels/ace6598/follows")
-print(r.json()['follows'])
+username = raw_input("Username: ")
+phonenumber = raw_input("Number: +1")
+requestString = "https://api.twitch.tv/kraken/channels/"+username+"/follows"
+r = requests.get(requestString)
 config = yaml.load(open('config.yaml'))
 account_sid = config['account_sid']
 auth_token = config['auth_token']
 client = TwilioRestClient(account_sid, auth_token)
-#message = client.sms.messages.create(body="TEST", to="+17326681916", from_="+17325202749")
+#list of followers
+followers = [l['user']['name'] for l in r.json()['follows']]
+addUser(phonenumber, followers)
+#message = client.sms.messages.create(body="yay text message", to="+19084216532", from_="+17325202749")
 #print message.sid
