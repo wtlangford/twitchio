@@ -6,10 +6,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET','POST'])
 def hello_monkey():
-  print "i got something"
   from_number = request.values.get('From',None)
   resp = twilio.twiml.Response()
-  resp.message(message)
+  resp.message("I got it")
+  client.inputName(request.values.get('Body',None),from_number)
   return str(resp)
 
 if __name__== "__main__":
