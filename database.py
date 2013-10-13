@@ -20,3 +20,22 @@ def getChannelsToCheck() :
 	c = db.cursor()
 	c.execute("""SELECT DISTINCT channel FROM users""")
 	return [res[0] for res in c.fetchall()]
+
+def isChannelNewlyStreaming(channel) :
+	db = MySQLdb.connect(user=cfg['username'],passwd=cfg['password'],db=cfg['dbname'])
+	c = db.cursor()
+	c.execute("""SELECT IF(COUNT(*) >0, 0, 1) FROM streamingchannels WHERE channel = %s""",channel)
+	return (False,True)[c.fetchone()[0]]
+
+def channelDidStopStreaming(channel) :
+	db = MySQLdb.connect(user=cfg['username'],passwd=cfg['password'],db=cfg['dbname'])
+	c = db.cursor()
+	c.execute("""DELETE FROM streamingchannels WHERE channel = %s""",channel)
+	db.commit()
+
+def channelDidStartStreaming(channel) :
+	db = MySQLdb.connect(user=cfg['username'],passwd=cfg['password'],db=cfg['dbname'])
+	c = db.cursor()
+	c.execute("""INSERT INTO streamingchannels (channel) VALUES (%s)""",channel)
+	db.commit()
+
